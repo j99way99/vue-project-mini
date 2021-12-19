@@ -1,0 +1,603 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "TIL API 문서",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": [
+          "/signup"
+        ],
+        "description": "회원 가입을 위한 API 입니다. 카카오/네이버 간편로그인 이용이 가능합니다.",
+        "parameters": [
+          {
+            "name": "t_user",
+            "in": "formData",
+            "description": "사용자 아이디",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "사용자 이메일",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "enum": "[1, 2]",
+            "description": "유저타입(1-buyer, 2-seller)"
+          },
+          {
+            "name": "nickname",
+            "in": "formData",
+            "description": "닉네임",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]가입이 정상적으로 완료되었습니다.",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "409": {
+            "description": "[에러]사용자 아이디가 이미 존재하여 회원 가입이 실패하였습니다.",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 회원 가입에 실패하였습니다.",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "/login"
+        ],
+        "description": "로그인하는 API 입니다.",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "formData",
+            "description": "사용자 아이디",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "비밀번호",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]로그인이 완료되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러]비밀번호가 맞지 않아 로그인에 실패하였습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 로그인하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+    "/userinfo/{userid}": {
+      "get": {
+        "tags": [
+          "/userinfo"
+        ],
+        "description": "유저 프로필 정보를 가져옵니다.",
+        "operationId": "getUserInfoById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "유저 아이디",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]사용자 정보를 불러왔습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러]불러오기에 실패하였습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 불러오지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "/userinfo"
+        ],
+        "description": "특정 게시물을 수정하는 API입니다",
+        "operationId": "updatePost",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "프로필 수정할 유저 아이디",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "프로필 수정할 내용",
+            "required": true,
+            "requestBody": 
+              {
+                "properties": {
+                  "nickname": {
+                    "type": "string"
+                    },
+                  "noteTitle": {
+                    "type": "string"
+                  },
+                  "noteDetail": {
+                    "type": "string"
+                  }
+                }
+              }  
+          }      
+        ],
+        "responses": {
+          "201": {
+            "description": "[완료]프로필이 수정되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "400": {
+            "description": "[에러]프로필이 이미 존재합니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "404": {
+            "description": "[에러]프로필을 찾을 수 없습니다"
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 프로필을 생성하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "사용자가 등록한 게시물의 목록을 가져오는 API입니다",
+        "responses": {
+          "200": {
+            "description": "[완료]게시물을 받아왔습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러]인증 토큰이 유효하지 않아 게시물을 받아올 수 없습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 게시물을 받아오지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+    "/upload/:productId/:type/:fileName": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "게시물을 한개 생성하는 API입니다",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "게시물 제목",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contents",
+            "in": "formData",
+            "description": "게시물 내용",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "[완료]게시물이 생성되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "400": {
+            "description": "[에러]게시물이 이미 존재합니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 게시물을 생성하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+    "/download/:productId/:fileName": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "제품이미지 다운로드",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "formData",
+            "description": "제품아이디",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "유저타입",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fileName",
+            "in": "formData",
+            "description": "파일명",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "[완료]",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "400": {
+            "description": "[에러]요청에 문제가 있습니다.",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있습니다.",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },    
+    "/posts/{_id}": {
+      "get": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "특정 게시물을 조회하는 API입니다",
+        "operationId": "getPostById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "게시글 고유 아이디",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]게시물이 조회되었습니다",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            },
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "[에러]인증 토큰이 유효하지 않아 게시물을 받아올 수 없습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 게시물을 생성하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "특정 게시물을 수정하는 API입니다",
+        "operationId": "updatePost",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "수정할 게시물의 아이디",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "수정할 게시글의 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "[완료]게시물이 수정되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "400": {
+            "description": "[에러]게시물이 이미 존재합니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "404": {
+            "description": "[에러]게시글을 찾을 수 없습니다"
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 게시물을 생성하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "/posts"
+        ],
+        "description": "특정 게시물을 삭제하는 API입니다",
+        "operationId": "deletePost",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "삭제할 게시물의 아이디",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "[완료]게시물이 삭제되었습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "400": {
+            "description": "[에러]게시물을 삭제할 수 없습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "404": {
+            "description": "[에러]게시글을 찾을 수 없습니다"
+          },
+          "500": {
+            "description": "[에러]서버에 문제가 있어 게시물을 삭제하지 못했습니다",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+  "definitions": {
+    "product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "product_name": {
+          "type": "string",
+          "description": "product_name"
+        },
+        "product_price": {
+          "type": "integer",
+          "description": "product_price"
+        },
+        "delivery_price": {
+          "type": "integer",
+          "description": "delivery_price"
+        },
+        "add_delivery_price": {
+          "type": "integer",
+          "description": "add_delivery_price"
+        },
+        "tags": {
+          "type": "string",
+          "description": "tags"
+        },
+        "outbound_days": {
+          "type": "number",
+          "description": "outbound_days"
+        },
+        "seller_id": {
+          "type": "integer",
+          "description": "seller_id"
+        },
+        "category_id": {
+          "type": "integer",
+          "description": "category_id"
+        },
+        "active_yn": {
+          "type": "integer",
+          "description": "active_yn"
+        },
+        "created_date": {
+          "type": "date-time"
+        }
+      }
+    },
+    "seller": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "String"
+        },
+        "type": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "jwt": [],
+      "petstore_auth": [
+        "write:pets",
+        "read:pets"
+      ]
+    }
+  ],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
